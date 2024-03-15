@@ -1,0 +1,84 @@
+{
+  "builders": [
+    {
+      "access_key": "{{user `aws_access_key`}}",
+      "ami_groups": "{{user `AmiGroups`}}",
+      "ami_name": "{{user `AmiImageName`}}",
+      "assume_role": {
+        "role_arn": "{{user `aws_role_arn`}}"
+      },
+      "encrypt_boot": "{{user `EncryptBoot`}}",
+      "force_delete_snapshot": "true",
+      "instance_type": "{{user `InstanceType`}}",
+      "launch_block_device_mappings": [
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sda1",
+          "volume_size": "{{user `VolumeSize`}}",
+          "volume_type": "gp3"
+        }
+      ],
+      "profile": "{{user `aws_profile`}}",
+      "region": "{{user `aws_region`}}",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "shutdown_behavior": "terminate",
+      "snapshot_groups": "{{user `SnapshotGroups`}}",
+      "source_ami_filter": {
+        "filters": {
+          "name": "ubuntu/images/*ubuntu-jammy-22.04-amd64-server-*",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm"
+        },
+        "most_recent": true,
+        "owners": [
+          "099720109477"
+        ]
+      },
+      "ssh_username": "{{user `SshUsername`}}",
+      "tags": {
+        "BuiltBy": "Packer",
+        "Name": "{{user `AmiImageName`}}",
+        "OwnerEmail": "{{user `OwnerEmail`}}",
+        "SourceAmiId": "{{ .SourceAMI }}",
+        "SourceAmiName": "{{ .SourceAMIName }}"
+      },
+      "token": "{{user `aws_session_token`}}",
+      "type": "amazon-ebs"
+    }
+  ],
+  "post-processors": [
+    {
+      "output": "manifest.json",
+      "strip_path": true,
+      "type": "manifest"
+    }
+  ],
+  "provisioners": [
+    {
+      "extra_arguments": [
+        "-v",
+        "--ssh-extra-args",
+        "-o IdentitiesOnly=yes -o HostKeyAlgorithms=+ssh-rsa -o PubkeyAcceptedAlgorithms=+ssh-rsa",
+        "--scp-extra-args",
+        "'-O'"
+      ],
+      "playbook_file": "playbook.yaml",
+      "type": "ansible"
+    }
+  ],
+  "variables": {
+    "AmiGroups": "all",
+    "EncryptBoot": "false",
+    "InstanceType": "t3.nano",
+    "OwnerEmail": "it@sagebase.org",
+    "SnapshotGroups": "all",
+    "SshUsername": "ubuntu",
+    "VolumeSize": "16",
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_profile": "{{env `AWS_PROFILE`}}",
+    "aws_region": "{{env `AWS_DEFAULT_REGION`}}",
+    "aws_role_arn": "{{env `AWS_ROLE_ARN`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "aws_session_token": "{{env `AWS_SESSION_TOKEN`}}"
+  }
+}

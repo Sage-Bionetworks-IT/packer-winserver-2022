@@ -1,0 +1,16 @@
+- name: Main
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Install packages
+      ansible.builtin.apt:
+        state: present
+        update_cache: true
+        pkg:
+          - "python3-pip"
+
+    - name: Install python packages
+      ansible.builtin.pip:
+        name:
+          - synapseclient

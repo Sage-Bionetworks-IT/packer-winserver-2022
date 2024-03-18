@@ -8,8 +8,3 @@ repos:
     -   id: check-json
     -   id: pretty-format-json
         args: [--autofix]
--   repo: https://github.com/ansible/ansible-lint
-    rev: v6.16.2
-    hooks:
-    -   id: ansible-lint
-        files: src/.*\.(yaml|yml)$

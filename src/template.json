@@ -23,10 +23,9 @@
       },
       "tags": {
         "BuiltBy": "Packer",
-        "Department": "{{user `Department`}}",
+        "CostCenter": "{{user `CostCenter`}}",
         "Name": "{{user `AmiImageName`}}",
         "OwnerEmail": "{{user `OwnerEmail`}}",
-        "Project": "{{user `Project`}}",
         "SourceAmiId": "{{ .SourceAMI }}",
         "SourceAmiName": "{{ .SourceAMIName }}"
       },
@@ -56,10 +55,9 @@
   ],
   "variables": {
     "AmiGroups": "all",
-    "Department": "Platform",
+    "CostCenter": "Platform Infrastructure / 990300",
     "InstanceType": "t3.small",
     "OwnerEmail": "it@sagebase.org",
-    "Project": "Infrastructure",
     "SnapshotGroups": "all"
   }
 }

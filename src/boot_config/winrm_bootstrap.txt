@@ -1,5 +1,7 @@
 <powershell>
 
+# Copied from https://developer.hashicorp.com/packer/integrations/hashicorp/amazon/latest/components/builder/ebs#connecting-to-windows-instances-using-winrm
+
 # MAKE SURE IN YOUR PACKER CONFIG TO SET:
 #
 #

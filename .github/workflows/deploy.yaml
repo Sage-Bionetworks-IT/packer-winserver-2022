@@ -24,6 +24,7 @@ jobs:
       - name: packer validate
         run: |
           pushd src
+          packer plugins install github.com/hashicorp/amazon
           packer validate -var AmiImageName=validate template.json
   deploy:
     name: Deploy to AWS org-sagebase-imagecentral
@@ -54,4 +55,5 @@ jobs:
     - name: Build and Upload AMI
       run: |
         pushd src
+        packer plugins install github.com/hashicorp/amazon
         AWS_DEFAULT_REGION=${{ env.AWS_REGION }} packer build -force -var AmiImageName=${{ env.AMI_IMAGE_NAME }} template.json
